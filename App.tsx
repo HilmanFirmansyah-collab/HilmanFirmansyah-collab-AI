@@ -28,6 +28,32 @@ const App: React.FC = () => {
     }
   };
 
+  const handleDownload = () => {
+    if (!searchState.data || searchState.data.length === 0) return;
+
+    const content = searchState.data.map((channel, index) => {
+      return `${index + 1}. ${channel.name}
+URL: ${channel.url}
+Tags: ${channel.tags.join(', ')}
+Alasan Kemiripan: ${channel.similarityReason}
+Deskripsi: ${channel.description}
+`;
+    }).join('\n--------------------------------------------------\n\n');
+
+    const header = `DAFTAR REKOMENDASI CHANNEL YOUTUBE SERUPA\nTanggal: ${new Date().toLocaleDateString('id-ID')}\n\n`;
+    const fullContent = header + content;
+
+    const blob = new Blob([fullContent], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `rekomendasi_channel_${Date.now()}.txt`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  };
+
   return (
     <div className="min-h-screen bg-[#0f0f0f] text-white flex flex-col">
       <main className="flex-grow container mx-auto px-4 pb-20">
@@ -36,9 +62,29 @@ const App: React.FC = () => {
 
         {/* Error State */}
         {searchState.error && (
-          <div className="max-w-2xl mx-auto bg-red-900/20 border border-red-900 text-red-200 p-4 rounded-lg flex items-center gap-3">
+          <div className="max-w-2xl mx-auto bg-red-900/20 border border-red-900 text-red-200 p-4 rounded-lg flex items-center gap-3 mb-8">
              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
             <p>{searchState.error}</p>
+          </div>
+        )}
+
+        {/* Download Button & Results Count */}
+        {!searchState.isLoading && searchState.data && searchState.data.length > 0 && (
+          <div className="flex flex-col sm:flex-row justify-between items-center max-w-7xl mx-auto mb-6 gap-4">
+            <h2 className="text-xl font-semibold text-gray-200">
+              Ditemukan <span className="text-red-500">{searchState.data.length}</span> channel serupa
+            </h2>
+            <button
+              onClick={handleDownload}
+              className="flex items-center gap-2 bg-[#1f1f1f] hover:bg-[#2a2a2a] border border-gray-700 hover:border-red-500 text-gray-300 hover:text-red-400 px-4 py-2 rounded-lg transition-all duration-200 text-sm font-medium shadow-sm"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                <polyline points="7 10 12 15 17 10" />
+                <line x1="12" y1="15" x2="12" y2="3" />
+              </svg>
+              Download Hasil (.txt)
+            </button>
           </div>
         )}
 

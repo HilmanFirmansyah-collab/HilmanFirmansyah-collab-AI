@@ -11,18 +11,19 @@ export const findSimilarChannels = async (videoUrl: string): Promise<ChannelReco
       Tugas kamu:
       1. Analisis konten, topik, gaya penyampaian, dan niche dari video/channel tersebut menggunakan Google Search.
       2. Temukan 5-8 Channel YouTube LAIN yang memiliki konsep, materi, dan target audiens yang SANGAT MIRIP.
+         PENTING: Cakupan pencarian harus luas. Sertakan channel berbahasa Indonesia DAN channel berbahasa Inggris (Internasional) yang relevan. Jangan batasi hanya pada satu bahasa.
       3. Berikan output HANYA dalam format array JSON (raw JSON array). Jangan gunakan Markdown formatting.
       
       Struktur JSON untuk setiap item:
       {
         "name": "Nama Channel",
-        "description": "Deskripsi singkat channel",
-        "similarityReason": "Alasan spesifik mengapa channel ini mirip dengan link yang diberikan (misal: gaya editing sama, topik pembahasan sama)",
+        "description": "Deskripsi singkat channel (Gunakan Bahasa Indonesia)",
+        "similarityReason": "Alasan spesifik mengapa channel ini mirip dengan link yang diberikan (Gunakan Bahasa Indonesia)",
         "url": "Link ke channel tersebut (atau link pencarian youtube jika tidak pasti)",
         "tags": ["Tag1", "Tag2", "Tag3"]
       }
 
-      Pastikan datanya akurat dan relevan. Gunakan Bahasa Indonesia untuk description dan similarityReason.
+      Pastikan datanya akurat dan relevan. Gunakan Bahasa Indonesia untuk description dan similarityReason, meskipun channelnya berbahasa Inggris.
     `;
 
     const response = await ai.models.generateContent({
