@@ -1,0 +1,5 @@
+{
+  "name": "YT Similar Channel Finder",
+  "description": "Aplikasi untuk menemukan rekomendasi channel YouTube dengan konsep dan materi serupa berdasarkan link video yang diberikan.",
+  "requestFramePermissions": []
+}
